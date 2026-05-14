@@ -1,0 +1,38 @@
+Module 8 RAG Corpus — License Notice
+=====================================
+
+The corpus in `data/corpus.jsonl`, together with the labeled evaluation sets
+in `data/retrieval_eval.jsonl` and `data/rag_eval.jsonl`, is a derivative work
+based on:
+
+1. The BEIR CQADupStack benchmark
+   - https://huggingface.co/datasets/BeIR/cqadupstack
+   - https://huggingface.co/datasets/BeIR/cqadupstack-qrels
+   - License: Creative Commons Attribution-ShareAlike 4.0 International
+     (CC BY-SA 4.0)
+
+2. The public Stack Exchange data dump (April 2024 snapshot)
+   - https://archive.org/details/stackexchange
+   - Subsets used: softwareengineering.stackexchange.com (the former
+     programmers.stackexchange.com), webmasters.stackexchange.com,
+     android.stackexchange.com.
+   - Underlying user content on the Stack Exchange Network is licensed by its
+     authors under Creative Commons Attribution-ShareAlike 4.0 International
+     (CC BY-SA 4.0); historical posts may be CC BY-SA 3.0. We treat the
+     entire corpus as CC BY-SA 4.0 for downstream use.
+
+Because both upstream sources are CC BY-SA, this derivative corpus is also
+distributed under CC BY-SA 4.0:
+
+   https://creativecommons.org/licenses/by-sa/4.0/
+
+Per the ShareAlike obligation, any redistribution or adaptation of this corpus
+must:
+  (a) attribute the original Stack Exchange authors and the Stack Exchange
+      Network (see ATTRIBUTION.md for the canonical attribution text);
+  (b) attribute the BEIR benchmark and its maintainers (see ATTRIBUTION.md);
+  (c) be itself distributed under CC BY-SA 4.0 or a compatible license.
+
+Build scripts in `scripts/` and configuration files in this directory are not
+derivative of the corpus content and are released under the terms of the
+parent `aispire-14005` repository.

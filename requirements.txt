@@ -1,0 +1,7 @@
+sentence-transformers>=2.2,<3
+weaviate-client>=3.25,<4
+transformers>=4.30,<5
+torch
+numpy<2
+pandas
+pytest
