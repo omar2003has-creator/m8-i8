@@ -1,35 +1,50 @@
-"""Learner-written tests for the RAG pipeline.
-
-Replace each `pytest.fail("Not implemented...")` body with a real test that
-uses `assert` statements. The autograder includes an AST meta-check
-(test_learner_tests_complete) that verifies (a) at least 3 test functions
-exist, (b) each has at least 1 ast.Assert node, and (c) no `pass` body and
-no `pytest.fail("Not implemented")` placeholder remain.
-
-Hint: import the functions you want to test from rag_service. The Weaviate
-service must be running locally (the autograder workflow brings it up; for
-local runs, `docker run` Weaviate first and `python ingest.py`).
-"""
+"""Learner-written tests for the RAG pipeline."""
 
 import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-import pytest
+from rag_service import retrieve, build_prompt, groundedness_score
 
 
 def test_retrieve_returns_k_or_fewer():
-    """retrieve(query, k=N) should return at most N items, each a dict."""
-    pytest.fail("Not implemented — write your test here")
+    """retrieve(query, k=5) returns at most 5 dicts with required keys."""
+    results = retrieve("how do I reverse a string in Python", k=5)
+    assert isinstance(results, list)
+    assert len(results) <= 5
+    for item in results:
+        assert "doc_id" in item
+        assert "title" in item
+        assert "answer_text" in item
 
 
 def test_build_prompt_includes_context():
-    """build_prompt(query, contexts) should include all context titles in the
-    rendered prompt and the literal string 'Question:' before the query."""
-    pytest.fail("Not implemented — write your test here")
+    """build_prompt includes instruction, numbered context lines, and Answer:"""
+    query = "What is a REST API?"
+    contexts = [
+        {"doc_id": f"test:{i}", "title": f"Title {i}", "answer_text": f"Answer content {i} " * 10}
+        for i in range(1, 6)
+    ]
+    prompt = build_prompt(query, contexts)
+
+    # Instruction line
+    assert 'say "I don\'t know."' in prompt
+
+    # Numbered context lines
+    for i in range(1, 6):
+        assert f"[{i}] Title {i}:" in prompt
+
+    # Question and Answer marker
+    assert f"Question: {query}" in prompt
+    assert prompt.strip().endswith("Answer:")
 
 
 def test_groundedness_zero_for_unrelated_answer():
-    """groundedness_score(unrelated_answer, contexts) should be ~ 0.0."""
-    pytest.fail("Not implemented — write your test here")
+    """groundedness_score returns ~0.0 when answer shares no content words with context."""
+    contexts = [
+        {"answer_text": "the quick brown fox jumps over the lazy dog"},
+        {"answer_text": "python is a programming language used for scripting"},
+    ]
+    score = groundedness_score("xyzzy plugh quux frobnicate", contexts)
+    assert score <= 0.1
